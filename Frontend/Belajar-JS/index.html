@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar JS 2</title>
+    <style>
+        .item {
+            display: flex;
+            align-items: center;
+            width: 200px;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>To Do List</h1>
+    <form action="">
+        <input type="text" class="input-activity">
+        <button>
+            Add</button>
+    </form>
+    
+    <div class="list">
+        <!-- <div class="item">
+            <div class="activity">
+                Belajar</div>
+            <button>
+                X</button>
+        </div> -->
+    </div>
+
+
+
+    <script>
+        const form = document.querySelector('form')
+        const list = document.querySelector('.list')
+        form.addEventListener('submit', (event) => {
+            event.preventDefault()
+            const item = document.createElement('div')
+            item.classList.add('item')
+            const activityElemen = document.createElement('div')
+            activityElemen.classList.add('activity')
+            const inputElement = document.querySelector('.input-activity')
+            activityElemen.innerHTML = inputElement.value
+            const tombolX = document.createElement('button')
+            tombolX.innerHTML = "X"
+
+            item.appendChild(activityElemen)
+            item.appendChild(tombolX)
+            list.appendChild(item)
+            
+            tombolX.addEventListener('click', (event) => {
+                event.target.parentElement.style.display = "none"
+            })
+
+            inputElement.value = ""
+        })
+    </script>
+</body>
+</html>

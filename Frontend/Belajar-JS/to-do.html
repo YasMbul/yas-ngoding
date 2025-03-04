@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar JS 2</title>
+    <style>
+        .item {
+            display: flex;
+            align-items: center;
+            width: 200px;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>To Do List</h1>
+    <form action="">
+        <input type="text" class="input-activity">
+        <button>
+            Add</button>
+    </form>
+    
+    <div class="list">
+        <!-- <div class="item">
+            <div class="activity">
+                Belajar</div>
+            <button>
+                X</button>
+        </div> -->
+    </div>
+
+
+
+    <script>
+        let dataJson = localStorage.getItem('todo-list')
+        let data = JSON.parse(dataJson)
+        if (data == null){
+            const emtyList = []
+            localStorage.setItem('todo-list', JSON.stringify(emtyList))
+            data = emtyList
+        }
+
+        localStorage.setItem('todo-list', dataJson)
+
+        const form = document.querySelector('form')
+        const list = document.querySelector('.list')
+        
+        function renderList() {
+            list.innerHTML = ""
+            data.forEach((todo) => {
+                const item = document.createElement('div')
+                item.classList.add('item')
+                const activityElemen = document.createElement('div')
+                activityElemen.classList.add('activity')
+                activityElemen.innerHTML = todo.activity
+                const tombolX = document.createElement('button')
+                tombolX.innerHTML = "X"
+
+                item.appendChild(activityElemen)
+                item.appendChild(tombolX)
+                item.setAttribute('data-id', todo.id)
+                list.appendChild(item)
+                
+                tombolX.addEventListener('click', (event) => {
+                    const deletedId = tombolX.parentElement.getAttribute('data-id')
+                    data = data.filter((dataItem) => {
+                        return dataItem.id != deletedId
+                    })
+                    localStorage.setItem('todo-list', JSON.stringify(data))
+                    renderList()
+                })
+            })
+        }
+
+        renderList()
+        
+        form.addEventListener('submit', (event) => {
+            event.preventDefault()
+            const inputElement = document.querySelector('.input-activity')
+            const lastItem = data[data.length - 1]
+            const newItem = {
+                id: data.length + 1,
+                activity: inputElement.value
+            }
+
+            data.push(newItem)
+            localStorage.setItem('todo-list', JSON.stringify(data))
+            renderList()
+            inputElement.value = ""
+        })
+    </script>
+</body>
+</html>
